@@ -12,4 +12,16 @@ form {
 
 input {
     margin-top: 10px
-};
+}
+
+.button {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 5px 16px;
+    margin-right: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
