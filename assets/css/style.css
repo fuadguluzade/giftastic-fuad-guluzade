@@ -8,10 +8,23 @@ body {
 form {
     float: right;
     margin-top: 25px;
+    clear: both;
 }
 
 input {
     margin-top: 10px
+}
+
+.block {
+    display: block;
+}
+
+img {
+    clear: both;
+    height: 200px;
+    width: auto;
+    margin-right: 50px;
+    margin-top: 50px;
 }
 
 .button {
