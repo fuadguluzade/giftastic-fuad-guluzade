@@ -7,29 +7,42 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giftastic</title>
     <link rel="stylesheet" href="./assets/css/reset.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
-    <div id="buttons">
+    <div class="container-fluid">
+        <div class="row">
 
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <form>
+                            <div class="form-group">
+                                <label for="animal-input">Add an animal</label>
+                                <input type="text" id="animal-input" class="form-control">
+                            </div>
+                            <button type="submit" id="animal-button" class="btn btn-primary">Submit</button>
+                            <button type="submit" id="additional-button" class="btn btn-secondary">Get 10 more</button>
+
+                        </form>
+                        <div id="buttons"></div>
+                    </div>
+
+                    <div class="col-md-9 mt-4 animals">
+                        <div class="card-columns cc-animals"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
     </div>
-
-
-    <form id="animal-form">
-        <label class="block" for="animal-input">Add an animal</label>
-        <input class="block" id="animal-input" type="text">
-        <input class="block button" id="animal-button" type="submit" value="Submit">
-    </form>
-
-    <div id="animals">
-        
-    </div>
-
-
-
     <script src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous">
+        </script>
     <script src="./assets/javascript/app.js"></script>
 </body>
 
