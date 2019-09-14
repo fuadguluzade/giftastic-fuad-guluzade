@@ -4,11 +4,11 @@ var animatedGIF = [];
 var staticImgs = [];
 var ratings = [];
 var importTime = [];
+var favoritesArr = [];
 var queryWord;
 var limit = 10;
 var offset = 0;
 var animalsShow = true;
-var favoritesShow = false;
 $(".favorites").hide();
 
 $(document).ready(function () {
@@ -26,7 +26,6 @@ $("#buttons").on('click', '.button', function () {
         $(".animals").show();
         animalsShow = true;
         $(".favorites").hide();
-        favoritesShow = false;
     }
     resetVars();
     queryWord = $(this).text();
@@ -51,25 +50,27 @@ $("#buttons").on('click', '.button', function () {
 // "Get 10 more" button handler
 $("#additional-button").on('click', function () {
     event.preventDefault();
+    if (animalsShow) {
+        limit += 10;
+        offset += 10;
+        var queryURL = `https://api.giphy.com/v1/gifs/search?q=${queryWord}&limit=${limit}&offset=${offset}&api_key=7diNMvkB3SH15EgXNqytuN3Tyg5lGTDp`;
+        $.ajax({
+            url: queryURL,
+            method: "GET",
+        }).then(function (response) {
+            console.log(response);
+            for (var i = offset; i < limit; i++) {
+                titles[i] = response.data[i].title;
+                animatedGIF[i] = response.data[i].images.fixed_height.url;
+                ratings[i] = response.data[i].rating;
+                staticImgs[i] = response.data[i].images["480w_still"].url;
+                importTime[i] = response.data[i].import_datetime;
+                trendingTime[i] = response.data[i].trending_datetime;
+                $(".cc-animals").append(getCardItem(i));
+            }
+        });
+    }
 
-    limit += 10;
-    offset += 10;
-    var queryURL = `https://api.giphy.com/v1/gifs/search?q=${queryWord}&limit=${limit}&offset=${offset}&api_key=7diNMvkB3SH15EgXNqytuN3Tyg5lGTDp`;
-    $.ajax({
-        url: queryURL,
-        method: "GET",
-    }).then(function (response) {
-        console.log(response);
-        for (var i = offset; i < limit; i++) {
-            titles[i] = response.data[i].title;
-            animatedGIF[i] = response.data[i].images.fixed_height.url;
-            ratings[i] = response.data[i].rating;
-            staticImgs[i] = response.data[i].images["480w_still"].url;
-            importTime[i] = response.data[i].import_datetime;
-            trendingTime[i] = response.data[i].trending_datetime;
-            $(".cc-animals").append(getCardItem(i));
-        }
-    });
 });
 
 // Turn on/off .gifs
@@ -132,6 +133,86 @@ const resetVars = function () {
     offset = 0;
 }
 
+
+var gifIndex;
+var dragged;
+$(".col-md-3").on("drop", function () {
+    event.preventDefault();
+    $(".col-md-3").css("background-color", "inherit");
+});
+
+$("html").on("dragover", function (event) {
+    event.preventDefault();
+});
+
+$("html").on('dragstart', '.gif', function (event) {
+    gifIndex = $(this).attr("data-index");
+    dragged = event.target;
+});
+
+$(".col-md-3").on('dragenter', function (event) {
+    if (event.target === this) {
+        $(".col-md-3").css("background-color", "lightgrey");
+    }
+});
+
+$(".col-md-3").on('dragleave', function (event) {
+    if (event.target === this) {
+        $(".col-md-3").css("background-color", "inherit");
+    }
+});
+
+document.addEventListener("drop", function(event) {
+    event.preventDefault();
+    if (event.target.className == "col-md-3") {
+        if (animalsShow) {
+            favItemElem = [dragged.src, animatedGIF[gifIndex]];
+            favoritesArr.push(favItemElem);
+            document.getElementById("hint").innerHTML = "Dropped!";
+            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here!"), 2000);
+        } else {
+            delItemElem = [dragged.src, animatedGIF[gifIndex]];
+            favoritesArr.splice(favoritesArr.indexOf(delItemElem), 1);
+            document.getElementById("hint").innerHTML = "Deleted!";
+            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here to delete them"), 2000);
+            dragged.remove();
+        }
+    }
+});
+
+// document.addEventListener("dragend", function (event) {
+    
+//     }
+// });
+
+$("#favorites-button").on('click', function () {
+    event.preventDefault();
+    if (animalsShow) {
+        $(".animals").hide();
+        animalsShow = false;
+        $(".favorites").show();
+        $(".cc-favorites").empty();
+        for (var i = 0; i < favoritesArr.length; i++) {
+            $(".cc-favorites").append(`<img class="card-img-top gif mb-3" src=${favoritesArr[i][0]} data-index = ${i} data-state=still>`);
+        }
+        $("#hint").text("Drag and drop your favorite gifs here to delete them")
+    }
+});
+
+$(".favorites").on('click', ".gif", function () {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        $(this).attr('src', favoritesArr[$(this).attr("data-index")][1]);
+        $(this).attr("data-state", "animated");
+    } else {
+        $(this).attr('src', favoritesArr[$(this).attr("data-index")][0]);
+        $(this).attr("data-state", "still");
+    }
+});
+
+
+
+ 
 
 
 

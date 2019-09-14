@@ -24,14 +24,22 @@
                                 <input type="text" id="animal-input" class="form-control">
                             </div>
                             <button type="submit" id="animal-button" class="btn btn-primary">Submit</button>
-                            <button type="submit" id="additional-button" class="btn btn-secondary">Get 10 more</button>
-
+                            <button type="submit" id="additional-button" class="btn btn-secondary">Get 10 More</button>
+                            <button type="submit" id="favorites-button" class="btn btn-warning">Favorites</button>
                         </form>
                         <div id="buttons"></div>
+                        <br>
+                        <br>
+                        <p id="hint">Drag and drop your favorite gifs here!</p>
                     </div>
 
                     <div class="col-md-9 mt-4 animals">
                         <div class="card-columns cc-animals"></div>
+                    </div>
+
+                    <div class="col-md-9 favorites">
+                        <h2 class="border-bottom">Favorites</h2>
+                        <div class="card-columns cc-favorites"></div>
                     </div>
                 </div>
             </div>
