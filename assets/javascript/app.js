@@ -133,6 +133,8 @@ const resetVars = function () {
     offset = 0;
 }
 
+// drag handling
+//************************************************************************************************************
 
 var gifIndex;
 var dragged;
@@ -146,8 +148,8 @@ $("html").on("dragover", function (event) {
 });
 
 $("html").on('dragstart', '.gif', function (event) {
-    gifIndex = $(this).attr("data-index");
     dragged = event.target;
+    gifIndex = $(this).attr("data-index");
 });
 
 $(".col-md-3").on('dragenter', function (event) {
@@ -162,44 +164,41 @@ $(".col-md-3").on('dragleave', function (event) {
     }
 });
 
-document.addEventListener("drop", function(event) {
+document.addEventListener("drop", function (event) {
     event.preventDefault();
     if (event.target.className == "col-md-3") {
         if (animalsShow) {
-            favItemElem = [dragged.src, animatedGIF[gifIndex]];
+            favItemElem = [staticImgs[gifIndex], animatedGIF[gifIndex]];
             favoritesArr.push(favItemElem);
             document.getElementById("hint").innerHTML = "Dropped!";
-            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here!"), 2000);
+            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here!"), 1000);
         } else {
-            delItemElem = [dragged.src, animatedGIF[gifIndex]];
-            favoritesArr.splice(favoritesArr.indexOf(delItemElem), 1);
+            favoritesArr.splice(favoritesArr.indexOf(dragged.dataset.index), 1);
             document.getElementById("hint").innerHTML = "Deleted!";
-            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here to delete them"), 2000);
+            setTimeout(() => $("#hint").text("Drag and drop your favorite gifs here to delete them"), 1000);
             dragged.remove();
         }
+        localStorage.setItem('favoritesArr', JSON.stringify(favoritesArr));
+        formFavorites();
     }
 });
 
-// document.addEventListener("dragend", function (event) {
-    
-//     }
-// });
+//************************************************************************************************************
 
+//Favorites button event listener
 $("#favorites-button").on('click', function () {
     event.preventDefault();
     if (animalsShow) {
         $(".animals").hide();
         animalsShow = false;
         $(".favorites").show();
-        $(".cc-favorites").empty();
-        for (var i = 0; i < favoritesArr.length; i++) {
-            $(".cc-favorites").append(`<img class="card-img-top gif mb-3" src=${favoritesArr[i][0]} data-index = ${i} data-state=still>`);
-        }
+        formFavorites();
         $("#hint").text("Drag and drop your favorite gifs here to delete them")
     }
 });
 
-$(".favorites").on('click', ".gif", function () {
+// Turn gifs on/off in favorites section
+$(".favorites").on('click', ".gif", function (arr) {
     var state = $(this).attr("data-state");
     if (state === "still") {
         $(this).attr('src', favoritesArr[$(this).attr("data-index")][1]);
@@ -210,9 +209,24 @@ $(".favorites").on('click', ".gif", function () {
     }
 });
 
+const formFavorites = () => {
+    $(".cc-favorites").empty();
+    if (favoritesArr.length > 0) {
+        favoritesArr = JSON.parse(localStorage.getItem('favoritesArr'));
+        for (var i = 0; i < favoritesArr.length; i++) {
+            $(".cc-favorites").append(`<img class="card-img-top gif mb-3" src=${favoritesArr[i][0]} data-index = ${i} data-state=still>`);
+        }
+    } else {
+        return;
+    }
+    
+}
 
 
- 
+
+
+
+
 
 
 
