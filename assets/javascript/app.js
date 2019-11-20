@@ -26,6 +26,7 @@ $("#buttons").on('click', '.button', function () {
         $(".animals").show();
         animalsShow = true;
         $(".favorites").hide();
+        $("#hint").text("Drag and drop your favorite gifs here!");
     }
     resetVars();
     queryWord = $(this).text();
@@ -50,6 +51,7 @@ $("#buttons").on('click', '.button', function () {
 // "Get 10 more" button handler
 $("#additional-button").on('click', function () {
     event.preventDefault();
+    $("#hint").text("Drag and drop your favorite gifs here!");
     if (animalsShow) {
         limit += 10;
         offset += 10;
